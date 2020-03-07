@@ -17,14 +17,17 @@ app.set('views', 'views');
 // console.log(`app: ${app.get('env')}`);
 
 const Validate = require('./router');
-const courses = require('./routes/courses')
+const courses = require('./routes/courses');
+const indexPage = require('./routes/home');
+const logger = require('./middleware/logger')
 
 // app.use(express.json()); // instead I use bodyParser module
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
-app.use('/api/courses', courses)
+app.use('/api/courses', courses);
+app.use('/home', indexPage);
 
 // Configuration
 console.log('Application Name: ' + config.get('name'));
@@ -42,15 +45,11 @@ dbDebugger('Connected ot the database!!!');
 
 app.use(Validate.Log)
 app.use(Validate.Authenticate)
+app.use(logger)
 
 // var result = _.contains([1,2,3], 2); // underscore module
 // console.log(result)
 
-// ejs index page
-app.get('/home', (req, res) => {
-  res.render('index')
-})
-
-// decllaring PORT
+// declaring PORT
 const PORT = process.env.PORT || 3000;
 app.listen( PORT, () => console.log(`Listening port ${PORT}...`))
