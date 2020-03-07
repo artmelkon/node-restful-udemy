@@ -47,7 +47,7 @@ app.use(Validate.Authenticate)
 // console.log(result)
 
 // ejs index page
-app.get('/pages', (req, res) => {
+app.get('/home', (req, res) => {
   res.render('index')
 })
 
